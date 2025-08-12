@@ -1,0 +1,1133 @@
+
+!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>MOUAAD-CODE PHANTOM DZ</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo&family=Rubik+Moonrocks&display=swap');
+
+    :root {
+      --red: #ff0000;
+      --green: #00ff00;
+      --blue: #0077ff;
+      --cyan: #00ffff;
+      --bg: #000000;
+      --text-color: #ffffff;
+      --terminal-bg: #121212;
+      --terminal-text: #00ff00;
+      --terminal-bar-bg: #0a220a;
+      --theme-btn-bg: #333333;
+      --spiderweb-color: rgba(255, 0, 0, 0.3);
+      --matrix-color: #00ff00;
+      --cam-matrix-color: #0077ff;
+      --binary-color: #00ffff;
+    }
+
+    /* الثيم الأخضر */
+    .green-theme {
+      --red: #00ff00;
+      --bg: #000000;
+      --text-color: #00ff00;
+      --terminal-bg: #0a0a0a;
+      --terminal-text: #00ff00;
+      --terminal-bar-bg: #0a220a;
+      --theme-btn-bg: #0a330a;
+      --spiderweb-color: rgba(0, 255, 0, 0.3);
+      --matrix-color: #00ff00;
+    }
+
+    /* الثيم الأزرق */
+    .blue-theme {
+      --red: #0077ff;
+      --bg: #000000;
+      --text-color: #0077ff;
+      --terminal-bg: #0a0a0a;
+      --terminal-text: #0077ff;
+      --terminal-bar-bg: #0a0a33;
+      --theme-btn-bg: #0a0a55;
+      --spiderweb-color: rgba(0, 119, 255, 0.3);
+      --matrix-color: #0077ff;
+      --cam-matrix-color: #0077ff;
+    }
+
+    /* الثيم السماوي */
+    .cyan-theme {
+      --red: #00ffff;
+      --bg: #000000;
+      --text-color: #00ffff;
+      --terminal-bg: #0a0a0a;
+      --terminal-text: #00ffff;
+      --terminal-bar-bg: #0a3333;
+      --theme-btn-bg: #0a5555;
+      --spiderweb-color: rgba(0, 255, 255, 0.3);
+      --binary-color: #00ffff;
+    }
+
+    /* الوضع النهاري */
+    .light-mode {
+      --bg: #f0f0f0;
+      --text-color: #333333;
+      --terminal-bg: #ffffff;
+      --terminal-text: #006400;
+      --terminal-bar-bg: #e0e0e0;
+      --theme-btn-bg: #dddddd;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-color);
+      font-family: 'Cairo', Arial, sans-serif;
+      overflow-x: hidden;
+      padding-bottom: 20px;
+      user-select: none;
+      direction: rtl;
+      font-size: 20px;
+      transition: all 0.5s ease;
+      text-align: right;
+    }
+
+    canvas#spiderweb, canvas#matrix, canvas#cam-matrix, canvas#binary-rain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      z-index: -1;
+      display: none;
+    }
+
+    canvas#spiderweb.active {
+      display: block;
+    }
+
+    canvas#matrix.active {
+      display: block;
+    }
+
+    canvas#cam-matrix.active {
+      display: block;
+    }
+
+    canvas#binary-rain.active {
+      display: block;
+    }
+
+    h1 {
+      color: var(--red);
+      font-size: 72px;
+      margin: 40px 0 10px;
+      text-align: center;
+      text-shadow: 0 0 20px var(--red);
+      user-select: text;
+      font-family: 'Rubik Moonrocks', cursive;
+    }
+
+    img.profile-img {
+      display: block;
+      margin: 0 20px 20px auto;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      border: 3px solid var(--red);
+      object-fit: cover;
+    }
+
+    .info {
+      max-width: 400px;
+      margin: 0 auto 30px;
+      color: var(--red);
+      font-size: 20px;
+      line-height: 2.2;
+      user-select: text;
+      text-align: right;
+      font-family: 'Cairo', Arial, sans-serif;
+      padding: 0 15px;
+    }
+
+    .links {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px 30px;
+      padding: 25px 50px;
+      border: 2px solid var(--red);
+      border-radius: 10px;
+      color: white;
+      font-weight: bold;
+      font-size: 28px;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.3s;
+      user-select: text;
+      font-family: 'Cairo', Arial, sans-serif;
+      gap: 15px;
+    }
+
+    .links a:hover {
+      background: var(--red);
+      transform: scale(1.12);
+    }
+
+    .links a i {
+      font-size: 30px;
+    }
+
+    .cv {
+      max-width: 750px;
+      margin: 0 auto 60px;
+      padding: 0 20px;
+      text-align: right;
+      color: #d6d6d6;
+      user-select: text;
+      font-family: 'Cairo', Arial, sans-serif;
+      font-size: 20px;
+      line-height: 2.4;
+      background: #1a1a1a;
+      border-radius: 10px;
+      box-shadow: 0 0 15px 1px rgba(255, 0, 0, 0.6);
+      padding: 25px 30px;
+    }
+
+    .cv h2 {
+      color: var(--red);
+      font-size: 28px;
+      margin-bottom: 20px;
+      font-family: 'Rubik Moonrocks', cursive;
+    }
+
+    .cv ul {
+      list-style: square inside;
+      font-size: 20px;
+      line-height: 2.2;
+      padding-right: 20px;
+    }
+
+    .cv .extra-text {
+      margin-top: 25px;
+      color: var(--red);
+      font-size: 22px;
+      font-family: 'Rubik Moonrocks', cursive;
+      text-align: center;
+      white-space: pre-line;
+      user-select: text;
+      line-height: 1.7;
+      letter-spacing: 0.05em;
+      text-shadow: 0 0 10px var(--red);
+    }
+
+    .terminal {
+      position: relative;
+      margin: 40px auto;
+      width: 90%;
+      max-width: 900px;
+      height: 35vh;
+      background: var(--terminal-bg);
+      border-top: 3px solid var(--red);
+      color: var(--terminal-text);
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      user-select: text;
+      font-size: 24px;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 0 15px 2px var(--spiderweb-color);
+    }
+
+    .terminal-bar {
+      background: var(--terminal-bar-bg);
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      user-select: none;
+      border-radius: 8px 8px 0 0;
+    }
+
+    .btn {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-left: 16px;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      flex-shrink: 0;
+      box-shadow: 0 0 10px var(--red);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .btn:hover {
+      box-shadow: 0 0 20px var(--red);
+    }
+
+    .btn.close {
+      background: #ff5f56;
+    }
+
+    .btn.minimize {
+      background: #ffbd2e;
+    }
+
+    .terminal-content {
+      flex: 1;
+      padding: 18px 24px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-family: monospace, "Courier New", monospace;
+      line-height: 1.7;
+      user-select: text;
+      background: #0b1a0b;
+      text-shadow: 0 0 8px var(--terminal-text), 0 0 10px var(--terminal-text);
+      font-size: 24px;
+      text-align: right;
+      direction: rtl;
+    }
+
+    .hack-click {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255, 0, 0, 0.8);
+      box-shadow: 0 0 12px 6px rgba(255, 0, 0, 0.8);
+      pointer-events: none;
+      animation: pulseRed 0.7s forwards;
+      z-index: 9999;
+    }
+
+    @keyframes pulseRed {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+        box-shadow: 0 0 12px 6px rgba(255, 0, 0, 0.8);
+      }
+      100% {
+        transform: scale(3);
+        opacity: 0;
+        box-shadow: 0 0 30px 15px rgba(255, 0, 0, 0);
+      }
+    }
+
+    .theme-switcher {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .theme-btn {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 2px solid var(--red);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--theme-btn-bg);
+      color: white;
+      font-size: 28px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .theme-btn:hover {
+      transform: scale(1.15);
+      box-shadow: 0 0 20px var(--red);
+    }
+
+    .theme-btn.active {
+      box-shadow: 0 0 25px var(--red);
+      transform: scale(1.15);
+    }
+
+    /* زر الوضع الليلي/النهاري */
+    .mode-switcher {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+
+    .mode-btn {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 2px solid var(--red);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--theme-btn-bg);
+      color: white;
+      font-size: 28px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .mode-btn:hover {
+      transform: scale(1.15);
+      box-shadow: 0 0 20px var(--red);
+    }
+
+    .mode-btn.active {
+      box-shadow: 0 0 25px var(--red);
+      transform: scale(1.15);
+    }
+
+    /* قسم معلومات الزائر */
+    .visitor-info {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      color: var(--red);
+      padding: 10px 20px;
+      font-family: 'Cairo', monospace;
+      font-size: 16px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+      z-index: 999;
+      border-top: 1px solid var(--red);
+      text-align: center;
+    }
+
+    .visitor-info-item {
+      margin: 5px 10px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      background: rgba(0, 0, 0, 0.5);
+      min-width: 200px;
+    }
+
+    .visitor-info-item i {
+      margin-left: 8px;
+      color: var(--red);
+    }
+
+    @media (max-width: 768px) {
+      .visitor-info {
+        flex-direction: column;
+        padding: 5px;
+      }
+      .visitor-info-item {
+        width: 100%;
+        margin: 3px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="spiderweb" class="active"></canvas>
+<canvas id="matrix"></canvas>
+<canvas id="cam-matrix"></canvas>
+<canvas id="binary-rain"></canvas>
+
+<div class="mode-switcher">
+  <div class="mode-btn" title="تبديل الوضع الليلي/النهاري"><i class="fas fa-moon"></i></div>
+</div>
+
+<div class="theme-switcher">
+  <div class="theme-btn active" data-theme="red" title="الثيم الأحمر"><i class="fas fa-spider"></i></div>
+  <div class="theme-btn" data-theme="green" title="الثيم الأخضر"><i class="fas fa-skull"></i></div>
+  <div class="theme-btn" data-theme="blue" title="الثيم الأزرق"><i class="fas fa-code"></i></div>
+  <div class="theme-btn" data-theme="cyan" title="الثيم السماوي"><i class="fas fa-laptop-code"></i></div>
+</div>
+
+<h1>⌯CODE PHANTOM DZ </h1>
+
+<img src="https://i.ibb.co/Vp5yxj7p/file-0.jpg" alt="profile" class="profile-img" />
+
+<div class="info">
+  <h2>⌯MOUAAD 🫆</h2>
+  <p>العمر : 18</p>
+  <p>البلد : الجزائر🇩🇿</p>
+  <p>التخصص : أمن سيبراني</p>
+</div>
+
+<div class="links">
+  <a href="https://t.me/IGX_World_Team" target="_blank" rel="noopener noreferrer">
+    <i class="fab fa-telegram"></i> Telegram
+  </a>
+</div>
+
+<section class="cv">
+  <h2>السيرة الذاتية</h2>
+  <ul>
+    <li><strong>الخبرة:</strong> 3 سنوات في اختبار الاختراق وتحليل الأنظمة.</li>
+    <li><strong>الدورات:</strong> CEH، OSCP، TryHackMe Badges.</li>
+    <li><strong>المهارات:</strong> Python، Bash، شبكات، Social Engineering.</li>
+    <li><strong>المشاريع:</strong> أدوات أمنية مفتوحة المصدر.</li>
+  </ul>
+  <div class="extra-text">
+𝟐𝟎𝟐𝟑/𝟏𝟎/𝟕 𝗚𝗮𝘇𝗮 ✌🏻🇵🇸
+{وٌمًأّ کْأّنِ ربًکْ نِسِـيِّأّ} 
+" كن مع الله يكن معك كلّ شيء ♥"
+Algérie 🇩🇿🇩🇪
+  </div>
+</section>
+
+<div class="terminal">
+  <div class="terminal-bar">
+    <button class="btn close" title="إغلاق"></button>
+    <button class="btn minimize" title="تصغير"></button>
+  </div>
+  <pre id="terminal-text" class="terminal-content"></pre>
+</div>
+
+<!-- قسم معلومات الزائر الجديد -->
+<div class="visitor-info">
+  <div class="visitor-info-item">
+    <i class="fas fa-network-wired"></i>
+    <span id="visitor-ip">جاري جلب عنوان IP...</span>
+  </div>
+  <div class="visitor-info-item">
+    <i class="fas fa-globe"></i>
+    <span id="visitor-location">جاري تحديد الموقع...</span>
+  </div>
+  <div class="visitor-info-item">
+    <i class="fas fa-laptop"></i>
+    <span id="visitor-device">جاري تحديد معلومات الجهاز...</span>
+  </div>
+</div>
+
+<script>
+  // العناصر الأساسية
+  const spiderwebCanvas = document.getElementById("spiderweb");
+  const matrixCanvas = document.getElementById("matrix");
+  const camMatrixCanvas = document.getElementById("cam-matrix");
+  const binaryRainCanvas = document.getElementById("binary-rain");
+  const themeBtns = document.querySelectorAll(".theme-btn");
+  const terminalText = document.getElementById("terminal-text");
+  const modeBtn = document.querySelector(".mode-btn");
+  
+  // عناصر معلومات الزائر
+  const visitorIpElement = document.getElementById("visitor-ip");
+  const visitorLocationElement = document.getElementById("visitor-location");
+  const visitorDeviceElement = document.getElementById("visitor-device");
+
+  // تهيئة الثيمات
+  function setTheme(theme) {
+    document.body.className = theme + '-theme';
+    
+    // إظهار وإخفاء الخلفيات حسب الثيم المختار
+    spiderwebCanvas.classList.remove('active');
+    matrixCanvas.classList.remove('active');
+    camMatrixCanvas.classList.remove('active');
+    binaryRainCanvas.classList.remove('active');
+    
+    if (theme === 'red') {
+      spiderwebCanvas.classList.add('active');
+      initSpiderweb();
+    } else if (theme === 'green') {
+      matrixCanvas.classList.add('active');
+      initHackerMatrix();
+    } else if (theme === 'blue') {
+      camMatrixCanvas.classList.add('active');
+      initCamMatrix();
+    } else if (theme === 'cyan') {
+      binaryRainCanvas.classList.add('active');
+      initBinaryRain();
+    }
+    
+    // تحديث الأزرار النشطة
+    themeBtns.forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.dataset.theme === theme) {
+        btn.classList.add('active');
+      }
+    });
+  }
+  
+  // تبديل الثيمات
+  themeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      setTheme(btn.dataset.theme);
+    });
+  });
+  
+  // تبديل الوضع الليلي/النهاري
+  let darkMode = true;
+  modeBtn.addEventListener('click', () => {
+    darkMode = !darkMode;
+    if (darkMode) {
+      document.body.classList.remove('light-mode');
+      modeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+      modeBtn.title = "الوضع الليلي";
+    } else {
+      document.body.classList.add('light-mode');
+      modeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+      modeBtn.title = "الوضع النهاري";
+    }
+  });
+
+  // تأثير خيوط العنكبوت (محسّن)
+  function initSpiderweb() {
+    const ctx = spiderwebCanvas.getContext("2d");
+    let w = spiderwebCanvas.width = window.innerWidth;
+    let h = spiderwebCanvas.height = window.innerHeight;
+
+    const points = [];
+    const maxDistance = 150;
+
+    function Point(x, y) {
+      this.x = x;
+      this.y = y;
+      this.vx = (Math.random() - 0.5) * 0.6;
+      this.vy = (Math.random() - 0.5) * 0.6;
+      this.radius = 2;
+      this.color = `rgba(255, ${Math.floor(Math.random() * 100)}, ${Math.floor(Math.random() * 100)}, 0.8)`;
+    }
+
+    Point.prototype.update = function() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0 || this.x > w) this.vx = -this.vx;
+      if (this.y < 0 || this.y > h) this.vy = -this.vy;
+    };
+
+    Point.prototype.draw = function() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+    };
+
+    function initPoints() {
+      points.length = 0;
+      const count = Math.floor((w * h) / 5000); // زيادة عدد النقاط
+      for (let i = 0; i < count; i++) {
+        points.push(new Point(Math.random() * w, Math.random() * h));
+      }
+    }
+
+    const mouse = { x: null, y: null, radius: 120 };
+
+    window.addEventListener("mousemove", e => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    window.addEventListener("mouseout", () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
+
+    function connectPoints() {
+      ctx.clearRect(0, 0, w, h);
+      
+      // رسم شبكة أكثر تعقيدًا
+      for (let i = 0; i < points.length; i++) {
+        let p1 = points[i];
+        p1.draw();
+
+        for (let j = i + 1; j < points.length; j++) {
+          let p2 = points[j];
+          const dx = p1.x - p2.x;
+          const dy = p1.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < maxDistance) {
+            const opacity = 1 - (dist / maxDistance);
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(255, 0, 0, ${opacity * 0.7})`;
+            ctx.lineWidth = opacity * 2;
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+            ctx.closePath();
+          }
+        }
+
+        if (mouse.x !== null && mouse.y !== null) {
+          const dxm = p1.x - mouse.x;
+          const dym = p1.y - mouse.y;
+          const distMouse = Math.sqrt(dxm * dxm + dym * dym);
+          if (distMouse < mouse.radius) {
+            const opacity = 1 - (distMouse / mouse.radius);
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(255, 0, 0, ${opacity * 0.9})`;
+            ctx.lineWidth = opacity * 3;
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.stroke();
+            ctx.closePath();
+          }
+        }
+      }
+    }
+
+    function animateSpiderweb() {
+      points.forEach(p => p.update());
+      connectPoints();
+      if (spiderwebCanvas.classList.contains('active')) {
+        requestAnimationFrame(animateSpiderweb);
+      }
+    }
+
+    initPoints();
+    animateSpiderweb();
+
+    window.addEventListener("resize", () => {
+      w = spiderwebCanvas.width = window.innerWidth;
+      h = spiderwebCanvas.height = window.innerHeight;
+      initPoints();
+    });
+  }
+
+  // تأثير الماتريكس للهاكر (محسّن)
+  function initHackerMatrix() {
+    const canvas = matrixCanvas;
+    const ctx = canvas.getContext("2d");
+    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const chars = "01アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッンابتثجحخدذرزسشصضطظعغفقكلمنهوي";
+    
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    const drops = [];
+    
+    // تحسين تأثير المطر
+    for (let i = 0; i < columns; i++) {
+      drops[i] = {
+        y: Math.random() * -canvas.height,
+        speed: 3 + Math.random() * 7,
+        length: Math.floor(Math.random() * 30) + 5
+      };
+    }
+    
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      ctx.fillStyle = "var(--matrix-color)";
+      ctx.font = fontSize + "px monospace";
+      
+      for (let i = 0; i < drops.length; i++) {
+        const headChar = chars.charAt(Math.floor(Math.random() * chars.length));
+        ctx.fillStyle = "var(--matrix-color)";
+        ctx.fillText(headChar, i * fontSize, drops[i].y * fontSize);
+        
+        // إضافة ذيل للمطر
+        for (let j = 1; j < drops[i].length; j++) {
+          const tailY = drops[i].y - j;
+          if (tailY >= 0) {
+            const opacity = 1 - (j / drops[i].length);
+            ctx.fillStyle = `rgba(0, 255, 0, ${opacity})`;
+            const tailChar = chars.charAt(Math.floor(Math.random() * chars.length));
+            ctx.fillText(tailChar, i * fontSize, tailY * fontSize);
+          }
+        }
+        
+        drops[i].y += drops[i].speed / 10;
+        
+        if (drops[i].y * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i].y = 0;
+          drops[i].speed = 3 + Math.random() * 7;
+          drops[i].length = Math.floor(Math.random() * 30) + 5;
+        }
+      }
+      
+      if (matrixCanvas.classList.contains('active')) {
+        requestAnimationFrame(draw);
+      }
+    }
+    
+    draw();
+    
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  }
+
+  // تأثير الكامتركس (محسّن)
+  function initCamMatrix() {
+    const canvas = camMatrixCanvas;
+    const ctx = canvas.getContext("2d");
+    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const binary = '01';
+    const hex = '0123456789ABCDEF';
+    const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+    const arabic = 'ابتثجحخدذرزسشصضطظعغفقكلمنهوي';
+    
+    const alphabet = binary + hex + symbols + arabic;
+    
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    
+    const rainDrops = [];
+    
+    for (let x = 0; x < columns; x++) {
+      rainDrops[x] = {
+        y: Math.random() * -canvas.height,
+        speed: 2 + Math.random() * 5,
+        length: Math.floor(Math.random() * 20) + 5
+      };
+    }
+    
+    const draw = () => {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      ctx.font = fontSize + 'px monospace';
+      
+      for (let i = 0; i < rainDrops.length; i++) {
+        const headChar = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+        ctx.fillStyle = 'var(--cam-matrix-color)';
+        ctx.fillText(headChar, i * fontSize, rainDrops[i].y * fontSize);
+        
+        // إضافة ذيل للمطر
+        for (let j = 1; j < rainDrops[i].length; j++) {
+          const tailY = rainDrops[i].y - j;
+          if (tailY >= 0) {
+            const opacity = 1 - (j / rainDrops[i].length);
+            ctx.fillStyle = `rgba(0, 119, 255, ${opacity})`;
+            const tailChar = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+            ctx.fillText(tailChar, i * fontSize, tailY * fontSize);
+          }
+        }
+        
+        rainDrops[i].y += rainDrops[i].speed / 10;
+        
+        if (rainDrops[i].y * fontSize > canvas.height && Math.random() > 0.975) {
+          rainDrops[i].y = 0;
+          rainDrops[i].speed = 2 + Math.random() * 5;
+          rainDrops[i].length = Math.floor(Math.random() * 20) + 5;
+        }
+      }
+      
+      if (camMatrixCanvas.classList.contains('active')) {
+        requestAnimationFrame(draw);
+      }
+    };
+    
+    draw();
+    
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  }
+
+  // تأثير المطر الثنائي (محسّن)
+  function initBinaryRain() {
+    const canvas = binaryRainCanvas;
+    const ctx = canvas.getContext("2d");
+    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const binary = '01';
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    const drops = [];
+    
+    for (let i = 0; i < columns; i++) {
+      drops[i] = {
+        y: Math.random() * -canvas.height,
+        speed: 2 + Math.random() * 5,
+        length: Math.floor(Math.random() * 20) + 5
+      };
+    }
+    
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      ctx.font = fontSize + 'px monospace';
+      
+      for (let i = 0; i < drops.length; i++) {
+        const headChar = binary.charAt(Math.floor(Math.random() * binary.length));
+        ctx.fillStyle = 'var(--binary-color)';
+        ctx.fillText(headChar, i * fontSize, drops[i].y * fontSize);
+        
+        // إضافة ذيل للمطر
+        for (let j = 1; j < drops[i].length; j++) {
+          const tailY = drops[i].y - j;
+          if (tailY >= 0) {
+            const opacity = 1 - (j / drops[i].length);
+            ctx.fillStyle = `rgba(0, 255, 255, ${opacity})`;
+            const tailChar = binary.charAt(Math.floor(Math.random() * binary.length));
+            ctx.fillText(tailChar, i * fontSize, tailY * fontSize);
+          }
+        }
+        
+        drops[i].y += drops[i].speed / 10;
+        
+        if (drops[i].y * fontSize > canvas.height) {
+          drops[i].y = Math.random() * -50;
+          drops[i].speed = 2 + Math.random() * 5;
+          drops[i].length = Math.floor(Math.random() * 20) + 5;
+        }
+      }
+      
+      if (binaryRainCanvas.classList.contains('active')) {
+        requestAnimationFrame(draw);
+      }
+    }
+    
+    draw();
+    
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  }
+
+  // تأثير النقر
+  document.addEventListener("click", e => {
+    const dot = document.createElement("div");
+    dot.classList.add("hack-click");
+    dot.style.left = e.pageX - 10 + "px";
+    dot.style.top = e.pageY - 10 + "px";
+    document.body.appendChild(dot);
+    setTimeout(() => dot.remove(), 700);
+  });
+
+  // المحاكاة الطرفية (محسّنة)
+  const terminalLines = [
+    "⌯CODE PHANTOM DZ",
+    "",
+    "غزة حرة",
+    "فلسطين ستبقى في القلب دائما...",
+    "مجال الهكر الأخلاقي هو درع حماية وأمل المستقبل.",
+    "الأخلاقيون يقودون التغيير في عالم الأمن الرقمي.",
+    "فلنقف مع الحق ولنحمي خصوصيتنا وأماننا...",
+    "",
+    "تمت برمجه هذا الموقع من قبل ",
+    "MOUAAD @MBl_py",
+    "",
+    "جمع معلومات الزائر..."
+  ];
+  const visitorInfoLines = [
+    "معلومات الزائر:",
+    "----------------",
+    "عنوان IP: جاري التحميل...",
+    "البلد: جاري التحميل...",
+    "المدينة: جاري التحميل...",
+    "مزود الخدمة: جاري التحميل...",
+    "نظام التشغيل: جاري التحميل...",
+    "المتصفح: جاري التحميل...",
+    "دقة الشاشة: جاري التحميل...",
+    "الوقت الحالي: جاري التحميل...",
+    "اللغة: جاري التحميل...",
+    "إصدار المتصفح: جاري التحميل...",
+    "المنصة: جاري التحميل...",
+    "ذاكرة الوصول العشوائي: جاري التحميل...",
+    "عدد أنوية المعالج: جاري التحميل..."
+  ];
+
+  function startTyping() {
+    terminalText.textContent = "";
+    let currentLine = 0;
+    let currentChar = 0;
+    let showingVisitorInfo = false;
+    
+    function typeLine() {
+      if (!showingVisitorInfo && currentLine >= terminalLines.length) {
+        // بعد انتهاء النص الرئيسي، ابدأ بكتابة معلومات الزائر
+        showingVisitorInfo = true;
+        currentLine = 0;
+        getVisitorInfo();
+        return;
+      }
+      
+      if (showingVisitorInfo) {
+        if (currentLine >= visitorInfoLines.length) {
+          setTimeout(startTyping, 3000); // يعيد الكتابة بعد 3 ثواني
+          return;
+        }
+        
+        const line = visitorInfoLines[currentLine];
+        if (currentChar < line.length) {
+          terminalText.textContent += line[currentChar];
+          currentChar++;
+          terminalText.scrollTop = terminalText.scrollHeight;
+          setTimeout(typeLine, 20); // سرعة أسرع لمعلومات الزائر
+        } else {
+          terminalText.textContent += "\n";
+          currentLine++;
+          currentChar = 0;
+          setTimeout(typeLine, 50);
+        }
+      } else {
+        const line = terminalLines[currentLine];
+        if (currentChar < line.length) {
+          terminalText.textContent += line[currentChar];
+          currentChar++;
+          terminalText.scrollTop = terminalText.scrollHeight;
+          setTimeout(typeLine, 40);
+        } else {
+          terminalText.textContent += "\n";
+          currentLine++;
+          currentChar = 0;
+          setTimeout(typeLine, 200);
+        }
+      }
+    }
+    
+    typeLine();
+  }
+
+  // جمع معلومات الزائر (محسّن)
+  function getVisitorInfo() {
+    // معلومات الشاشة
+    const os = getOS();
+    const browser = `${getBrowser()} ${getBrowserVersion()}`;
+    const screenRes = `${window.screen.width}x${window.screen.height} (${window.screen.colorDepth}بت)`;
+    
+    visitorInfoLines[6] = `نظام التشغيل: ${os}`;
+    visitorInfoLines[7] = `المتصفح: ${browser}`;
+    visitorInfoLines[8] = `دقة الشاشة: ${screenRes}`;
+    
+    // الوقت الحالي
+    const now = new Date();
+    visitorInfoLines[9] = `الوقت الحالي: ${now.toLocaleString('ar-AR')}`;
+    
+    // اللغة
+    visitorInfoLines[10] = `اللغة: ${navigator.language || 'غير معروف'}`;
+    
+    // معلومات النظام
+    visitorInfoLines[11] = `إصدار المتصفح: ${navigator.userAgent.split(' ').pop() || 'غير معروف'}`;
+    visitorInfoLines[12] = `المنصة: ${navigator.platform || 'غير معروف'}`;
+    
+    // معلومات الأداء (إن وجدت)
+    if (navigator.deviceMemory) {
+      visitorInfoLines[13] = `ذاكرة الوصول العشوائي: ${navigator.deviceMemory}GB`;
+    } else {
+      visitorInfoLines[13] = `ذاكرة الوصول العشوائي: غير متاح`;
+    }
+    
+    if (navigator.hardwareConcurrency) {
+      visitorInfoLines[14] = `عدد أنوية المعالج: ${navigator.hardwareConcurrency}`;
+    } else {
+      visitorInfoLines[14] = `عدد أنوية المعالج: غير متاح`;
+    }
+    
+    // تحديث معلومات الزائر في أسفل الصفحة
+    updateVisitorInfoPanel(os, browser, screenRes);
+    
+    // معلومات الموقع باستخدام IP API
+    fetch('https://ipapi.co/json/')
+      .then(response => response.json())
+      .then(data => {
+        visitorInfoLines[2] = `عنوان IP: ${data.ip || 'غير معروف'}`;
+        visitorInfoLines[3] = `البلد: ${data.country_name || 'غير معروف'} (${data.country || '??'})`;
+        visitorInfoLines[4] = `المدينة: ${data.city || 'غير معروف'}`;
+        visitorInfoLines[5] = `مزود الخدمة: ${data.org || 'غير معروف'}`;
+        
+        // تحديث معلومات الموقع في لوحة المعلومات
+        updateVisitorLocationPanel(data.ip, data.country_name, data.city, data.org);
+      })
+      .catch(error => {
+        console.error('Error fetching IP info:', error);
+        visitorInfoLines[2] = 'عنوان IP: غير متاح';
+        visitorInfoLines[3] = 'البلد: غير متاح';
+        visitorInfoLines[4] = 'المدينة: غير متاح';
+        visitorInfoLines[5] = 'مزود الخدمة: غير متاح';
+        
+        // في حالة الخطأ، عرض رسالة خطأ في لوحة المعلومات
+        updateVisitorLocationPanel('غير متاح', 'غير متاح', 'غير متاح', 'غير متاح');
+      });
+  }
+
+  // تحديث لوحة معلومات الزائر (الجزء السفلي)
+  function updateVisitorInfoPanel(os, browser, screenRes) {
+    const deviceInfo = `نظام: ${os} | متصفح: ${browser} | دقة: ${screenRes}`;
+    visitorDeviceElement.textContent = deviceInfo;
+  }
+
+  function updateVisitorLocationPanel(ip, country, city, isp) {
+    visitorIpElement.textContent = `IP: ${ip}`;
+    visitorLocationElement.textContent = `موقع: ${city}, ${country} (${isp})`;
+  }
+
+  // اكتشاف نظام التشغيل
+  function getOS() {
+    const userAgent = navigator.userAgent;
+    if (userAgent.includes('Windows')) return 'Windows';
+    if (userAgent.includes('Mac')) return 'MacOS';
+    if (userAgent.includes('Linux')) return 'Linux';
+    if (userAgent.includes('Android')) return 'Android';
+    if (userAgent.includes('iPhone') || userAgent.includes('iPad')) return 'iOS';
+    return 'غير معروف';
+  }
+
+  // اكتشاف المتصفح
+  function getBrowser() {
+    const userAgent = navigator.userAgent;
+    if (userAgent.includes('Firefox')) return 'Firefox';
+    if (userAgent.includes('Chrome')) return 'Chrome';
+    if (userAgent.includes('Safari')) return 'Safari';
+    if (userAgent.includes('Edge')) return 'Edge';
+    if (userAgent.includes('Opera')) return 'Opera';
+    return 'غير معروف';
+  }
+
+  // اكتشاف إصدار المتصفح
+  function getBrowserVersion() {
+    const userAgent = navigator.userAgent;
+    let temp;
+    if ((temp = userAgent.match(/Firefox\/(\d+)/))) return temp[1];
+    if ((temp = userAgent.match(/Chrome\/(\d+)/))) return temp[1];
+    if ((temp = userAgent.match(/Safari\/(\d+)/))) return temp[1];
+    if ((temp = userAgent.match(/Edge\/(\d+)/))) return temp[1];
+    if ((temp = userAgent.match(/Opera\/(\d+)/))) return temp[1];
+    return '';
+  }
+
+  // التحكم في الطرفية
+  const terminal = document.querySelector(".terminal");
+  const btnClose = document.querySelector(".btn.close");
+  const btnMinimize = document.querySelector(".btn.minimize");
+  let minimized = false;
+
+  btnClose.onclick = () => {
+    terminal.style.display = "none";
+  };
+
+  btnMinimize.onclick = () => {
+    if (!minimized) {
+      terminal.style.height = "40px";
+      terminalText.style.display = "none";
+      minimized = true;
+    } else {
+      terminal.style.height = "35vh";
+      terminalText.style.display = "block";
+      minimized = false;
+    }
+  };
+
+  // بدء الكتابة في الطرفية
+  startTyping();
+
+  // تهيئة الثيم الافتراضي
+  setTheme('red');
+</script>
+
+</body>
+</html>
